@@ -1,0 +1,28 @@
+syntax = "proto3";
+ 
+ 
+option csharp_namespace = "SelfHostStreamService";
+package stream_sample;
+ 
+// 服务端定义
+service StreamSample {
+// 服务端返馈信息方法
+// 简单rpc
+rpc Normal (StreamRequest) returns (StreamReply) {}
+// 服务端串流 RPC
+rpc ServerSide (StreamRequest) returns (stream StreamReply) {}
+// 客户端串流 RPC
+rpc ClientSide (stream StreamRequest) returns (StreamReply) {}
+// 双向串流 RPC
+rpc Bidirectional (stream StreamRequest) returns (stream StreamReply) {}
+}
+ 
+// 包含用户名的请求信息
+message StreamRequest {
+string name = 1;
+}
+ 
+// 服务端响应信息
+message StreamReply {
+string message = 1;
+}
