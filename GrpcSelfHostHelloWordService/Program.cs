@@ -26,10 +26,11 @@ namespace GrpcSelfHostHelloWordService
                 cancellationTokenSource.Cancel();
             };
 
+            
             Server server = new Server(new[] 
             { 
-                new ChannelOption("MaxReceiveMessageSize", int.MaxValue),
-                new ChannelOption("MaxSendMessageSize", int.MaxValue),
+                new ChannelOption(ChannelOptions.MaxReceiveMessageLength, int.MaxValue),
+                new ChannelOption(ChannelOptions.MaxSendMessageLength, int.MaxValue),
             })
             {
                 Services = { Greeter.BindService(new GreeterImpl()) },

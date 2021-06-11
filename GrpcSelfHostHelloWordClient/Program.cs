@@ -1,4 +1,6 @@
 using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,15 +25,18 @@ namespace GrpcSelfHostHelloWordClient
                 cancellationTokenSource.Cancel();
             };
 
+            HttpClient.DefaultProxy = new WebProxy(); // 避免开启代理导致无法访问的情况
             // The port number(5000) must match the port of the gRPC server.
             using var channel = GrpcChannel.ForAddress("http://localhost:5000", new GrpcChannelOptions
             {
                 MaxReceiveMessageSize = int.MaxValue,
                 MaxSendMessageSize = int.MaxValue,
             });
-            CallInvoker callInvoker = channel.CreateCallInvoker();
-            //var client = new Greeter.GreeterClient(channel);
-            var client = new Greeter.GreeterClient(callInvoker);
+
+            //CallInvoker callInvoker = channel.CreateCallInvoker();
+            //var client = new Greeter.GreeterClient(callInvoker);
+            var client = new Greeter.GreeterClient(channel);
+
             while (!cancellationTokenSource.IsCancellationRequested)
             {
                 DateTime startTime = DateTime.Now;
@@ -45,3 +50,5 @@ namespace GrpcSelfHostHelloWordClient
         }
     }
 }
+
+// 连接的时候,不要开代理,代理可能不支持http2协议
