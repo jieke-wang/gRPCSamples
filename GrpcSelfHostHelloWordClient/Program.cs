@@ -52,3 +52,4 @@ namespace GrpcSelfHostHelloWordClient
 }
 
 // 连接的时候,不要开代理,代理可能不支持http2协议
+// c# - .NET 5 GRPC client call throws exception: Requesting HTTP version 2.0 with version policy RequestVersionOrHigher while HTTP/2 is not enabled https://stackoverflow.com/questions/66500195/net-5-grpc-client-call-throws-exception-requesting-http-version-2-0-with-versi
