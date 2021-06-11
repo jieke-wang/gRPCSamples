@@ -8,7 +8,7 @@ namespace GrpcHelloWordClient
 {
     class Program
     {
-        static async System.Threading.Tasks.Task Main(string[] args)
+        static async Task Main(string[] args)
         {
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             AppDomain.CurrentDomain.ProcessExit += (s, e) => 
@@ -23,7 +23,11 @@ namespace GrpcHelloWordClient
             };
 
             // The port number(5001) must match the port of the gRPC server.
-            using var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            using var channel = GrpcChannel.ForAddress("https://localhost:5001", new GrpcChannelOptions 
+            {
+                MaxReceiveMessageSize = int.MaxValue,
+                MaxSendMessageSize = int.MaxValue,
+            });
             var client = new Greeter.GreeterClient(channel);
 
             while (!cancellationTokenSource.IsCancellationRequested)
